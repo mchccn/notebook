@@ -11,3 +11,7 @@ html {
 
     overscroll-behavior: none;
 }
+
+.sidebar {
+    max-height: calc(100vh - 64px);
+}
