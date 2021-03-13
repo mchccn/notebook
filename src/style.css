@@ -12,6 +12,12 @@ html {
     overscroll-behavior: none;
 }
 
-.sidebar {
+.sidebar,
+.note-wrapper {
     max-height: calc(100vh - 64px);
+}
+
+.note-container {
+    width: 640px;
+    height: 100vh;
 }
