@@ -106,7 +106,15 @@ export default function Index() {
                         </div>
                     </aside>
                     <div className="note-wrapper flex-1 flex-col items-center overflow-scroll">
-                        <div className="note-container mx-auto my-0 p-4"></div>
+                        <div className="note-container mx-auto my-0 p-4">
+                            {note ? (
+                                <h1 className="text-5xl">{note.title}</h1>
+                            ) : (
+                                <div className="w-full h-full grid place-items-center">
+                                    <h1>No note selected.</h1>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
