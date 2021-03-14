@@ -9,9 +9,12 @@
     },
     "dependencies": {
         "dexie": "^3.0.3",
+        "highlight.js": "^10.6.0",
         "next": "10.0.8",
         "react": "17.0.1",
-        "react-dom": "17.0.1"
+        "react-dom": "17.0.1",
+        "remark": "^13.0.0",
+        "remark-html": "^13.0.1"
     },
     "devDependencies": {
         "@tailwindcss/postcss7-compat": "^2.0.3",
