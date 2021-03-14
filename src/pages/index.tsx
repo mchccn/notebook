@@ -1,4 +1,5 @@
 import Dexie from "dexie";
+import hljs from "highlight.js";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import remark from "remark";
@@ -50,6 +51,10 @@ export default function Index() {
             setNotes(await db.notes.toArray());
         })();
     }, []);
+
+    useEffect(() => {
+        hljs.highlightAll();
+    }, [content]);
 
     useEffect(() => {
         (async () => {
@@ -276,9 +281,9 @@ export default function Index() {
                                             </div>
                                         </div>
                                         <h1 className="text-5xl">{note.title}</h1>
-                                        <div className="my-2" dangerouslySetInnerHTML={{ __html: content }}></div>
+                                        <div className="rendered-note my-2" dangerouslySetInnerHTML={{ __html: content }}></div>
                                     </div>
-                                    <div className="flex mt-4">
+                                    <div className="flex mt-4 pb-4">
                                         <a
                                             onClick={() => {
                                                 setEditedTitle(note.title);
