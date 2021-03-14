@@ -72,17 +72,18 @@ export default function Index() {
                 <meta name="robots" content="follow" />
                 <meta name="theme-color" content="#000000" />
                 <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://notes.vercel.app/" />
+                <meta property="og:url" content="https://cursorsdottsx.github.io/notebook/" />
                 <meta property="og:site_name" content="notebook" />
                 <meta property="og:keywords" content="notebook" />
                 <meta property="og:locale" content="en-US" />
                 <meta property="og:title" content="notebook" />
-                <meta property="og:description" content="" />
+                <meta property="og:description" content="A simple notebook web app." />
                 <meta
                     property="og:image"
                     content="https://og-image.now.sh/notebook.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg&widths=auto&heights=250"
                 />
                 <title>notebook</title>
+                <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
             </Head>
             <div className="hidden lg:flex flex-col h-screen">
                 <header className="bg-light z-10 shadow-md p-4 h-16 flex items-center justify-between">
