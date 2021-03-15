@@ -45,11 +45,20 @@ export default function Index() {
     const [editedTitle, setEditedTitle] = useState("");
     const [editedNote, setEditedNote] = useState("");
 
+    const [isDarkTheme, setIsDarkTheme] = useState(false);
+
     useEffect(() => {
         (async () => {
             //@ts-ignore
             setNotes(await db.notes.toArray());
         })();
+
+        setIsDarkTheme(
+            localStorage.getItem("cursorsdottsx-notebook-theme") === "dark" ??
+                window.matchMedia("(prefers-color-scheme: dark)").matches
+        );
+
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => setIsDarkTheme(event.matches));
     }, []);
 
     useEffect(() => {
@@ -61,6 +70,10 @@ export default function Index() {
             if (note) setContent((await remark().use(html).process(note.note)).toString());
         })();
     }, [note]);
+
+    useEffect(() => {
+        localStorage.setItem("cursorsdottsx-notebook-theme", isDarkTheme ? "dark" : "light");
+    }, [isDarkTheme]);
 
     return (
         <>
@@ -83,18 +96,31 @@ export default function Index() {
                     content="https://og-image.now.sh/notebook.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg&widths=auto&heights=250"
                 />
                 <title>notebook</title>
-                <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+                <link rel="stylesheet" href={`/themes/${isDarkTheme ? "dark" : "light"}.css`} />
+                <link rel="shortcut icon" href="/fav.png" type="image/x-icon" />
             </Head>
-            <div className="hidden lg:flex flex-col h-screen">
-                <header className="bg-light z-10 shadow-md p-4 h-16 flex items-center justify-between">
-                    <h2 className="text-2xl font-light select-none">notebook</h2>
+            <div className={`${isDarkTheme ? "bg-gray-900 text-gray-100" : "bg-white"} hidden lg:flex flex-col h-screen`}>
+                <header
+                    className={`${
+                        isDarkTheme ? "border border-gray-800 shadow-lg" : "shadow-md"
+                    } z-10 p-4 h-16 flex items-center justify-between`}
+                >
+                    <h2 className="text-2xl font-light select-none cursor-pointer" onClick={() => setIsDarkTheme(!isDarkTheme)}>
+                        notebook
+                    </h2>
                 </header>
                 <div className="flex flex-row flex-1">
-                    <aside className="sidebar flex-row bg-light z-30 border-r border-gray-200 w-96 px-4 pb-4 overflow-scroll text-sm sm:text-base lg:text-lg shadow-md">
+                    <aside
+                        className={`sidebar flex-row z-30 border-r ${
+                            isDarkTheme ? "border-gray-800" : "border-gray-200"
+                        } w-96 px-4 pb-4 overflow-scroll text-sm sm:text-base lg:text-lg shadow-md`}
+                    >
                         <div>
                             {notes.map(({ id, title, note, createdAt, updatedAt }, i) => (
                                 <div
-                                    className="note cursor-pointer border border-gray-100 w-full h-28 shadow-sm hover:shadow-md transition-shadow flex flex-col px-4 py-3 select-none mt-4 rounded-sm"
+                                    className={`note cursor-pointer border ${
+                                        isDarkTheme ? "border-gray-800" : "border-gray-200"
+                                    } w-full h-28 shadow-sm hover:shadow-md transition-shadow flex flex-col px-4 py-3 select-none mt-4 rounded-sm`}
                                     key={i}
                                     onClick={() =>
                                         setNote({
@@ -112,41 +138,67 @@ export default function Index() {
                                         </span>
                                     </h1>
                                     <div className="flex justify-between">
-                                        <div className="text-gray-400 text-sm">
-                                            <span className="block text-xs text-gray-300">updated at</span>
+                                        <div className={`${isDarkTheme ? "text-gray-500" : "text-gray-400"} text-sm`}>
+                                            <span
+                                                className={`block text-xs ${isDarkTheme ? "text-gray-600" : "text-gray-300"}`}
+                                            >
+                                                updated at
+                                            </span>
                                             {updatedAt.toLocaleDateString()}
                                         </div>
-                                        <div className="text-gray-400 text-sm">
-                                            <span className="block text-xs text-gray-300">created at</span>
+                                        <div className={`${isDarkTheme ? "text-gray-500" : "text-gray-400"} text-sm`}>
+                                            <span
+                                                className={`block text-xs ${isDarkTheme ? "text-gray-600" : "text-gray-300"}`}
+                                            >
+                                                created at
+                                            </span>
                                             {createdAt.toLocaleDateString()}
                                         </div>
                                     </div>
                                 </div>
                             ))}
                             {isInNewMode ? (
-                                <div className="note-preview border border-gray-100 w-full h-28 shadow-sm flex flex-col px-4 py-3 select-none mt-4 rounded-sm">
+                                <div
+                                    className={`note-preview border ${
+                                        isDarkTheme ? "border-gray-800" : "border-gray-200"
+                                    } w-full h-28 shadow-sm flex flex-col px-4 py-3 select-none mt-4 rounded-sm`}
+                                >
                                     <h1 className="flex-1 text-xl flex items-center">
                                         <span className="max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
                                             {newTitle}
                                         </span>
                                     </h1>
                                     <div className="flex justify-between">
-                                        <div className="text-gray-400 text-sm">
-                                            <span className="block text-xs text-gray-300">updated at</span>
+                                        <div className={`${isDarkTheme ? "text-gray-500" : "text-gray-400"} text-sm`}>
+                                            <span
+                                                className={`block text-xs ${isDarkTheme ? "text-gray-600" : "text-gray-300"}`}
+                                            >
+                                                updated at
+                                            </span>
                                             {new Date().toLocaleDateString()}
                                         </div>
-                                        <div className="text-gray-400 text-sm">
-                                            <span className="block text-xs text-gray-300">created at</span>
+                                        <div className={`${isDarkTheme ? "text-gray-500" : "text-gray-400"} text-sm`}>
+                                            <span
+                                                className={`block text-xs ${isDarkTheme ? "text-gray-600" : "text-gray-300"}`}
+                                            >
+                                                created at
+                                            </span>
                                             {new Date().toLocaleDateString()}
                                         </div>
                                     </div>
                                 </div>
                             ) : (
                                 <div
-                                    className="note cursor-pointer border border-green-400 w-full h-28 shadow-sm hover:shadow-md transition-shadow grid place-items-center mt-4 rounded-sm"
+                                    className={`note cursor-pointer border ${
+                                        isDarkTheme ? "border-green-500" : "border-green-400"
+                                    } w-full h-28 shadow-sm hover:shadow-md transition-shadow grid place-items-center mt-4 rounded-sm`}
                                     onClick={() => setIsInNewMode(true)}
                                 >
-                                    <span className="text-green-400 text-4xl select-none">+</span>
+                                    <span
+                                        className={`${isDarkTheme ? "text-green-500" : "text-green-400"} text-4xl select-none`}
+                                    >
+                                        +
+                                    </span>
                                 </div>
                             )}
                         </div>
@@ -159,12 +211,16 @@ export default function Index() {
                                         type="text"
                                         value={newTitle}
                                         onChange={(e) => setNewTitle(e.target.value)}
-                                        className="outline-none text-xl bg-gray-100 w-full p-2 rounded block mb-4"
+                                        className={`outline-none text-xl ${
+                                            isDarkTheme ? "bg-gray-800" : "bg-gray-50"
+                                        } w-full p-2 rounded block mb-4`}
                                     />
                                     <textarea
                                         value={newNote}
                                         onChange={(e) => setNewNote(e.target.value)}
-                                        className="outline-none text-base bg-gray-100 w-full p-2 rounded resize-none block flex-1"
+                                        className={`outline-none text-base ${
+                                            isDarkTheme ? "bg-gray-800" : "bg-gray-50"
+                                        } w-full p-2 rounded resize-none block flex-1`}
                                     ></textarea>
                                     <div className="flex mt-4">
                                         <a
@@ -200,14 +256,18 @@ export default function Index() {
                                                 });
                                             }}
                                             className={`${
-                                                newTitle ? "cursor-pointer text-blue-600" : "cursor-not-allowed text-gray-400"
+                                                newTitle
+                                                    ? `cursor-pointer ${isDarkTheme ? "text-blue-500" : "text-blue-600"}`
+                                                    : `cursor-not-allowed ${isDarkTheme ? "text-gray-500" : "text-gray-400"}`
                                             } py-1 block mr-8`}
                                         >
                                             save
                                         </a>
                                         <a
                                             onClick={() => setIsInNewMode(false)}
-                                            className="cursor-pointer py-1 block text-red-600"
+                                            className={`cursor-pointer py-1 block ${
+                                                isDarkTheme ? "text-red-500" : "text-red-600"
+                                            }`}
                                         >
                                             cancel
                                         </a>
@@ -219,12 +279,16 @@ export default function Index() {
                                         type="text"
                                         value={editedTitle}
                                         onChange={(e) => setEditedTitle(e.target.value)}
-                                        className="outline-none text-xl bg-gray-100 w-full p-2 rounded block mb-4"
+                                        className={`outline-none text-xl ${
+                                            isDarkTheme ? "bg-gray-800" : "bg-gray-50"
+                                        } w-full p-2 rounded block mb-4`}
                                     />
                                     <textarea
                                         value={editedNote}
                                         onChange={(e) => setEditedNote(e.target.value)}
-                                        className="outline-none text-base bg-gray-100 w-full p-2 rounded resize-none block flex-1"
+                                        className={`outline-none text-base ${
+                                            isDarkTheme ? "bg-gray-800" : "bg-gray-50"
+                                        } w-full p-2 rounded resize-none block flex-1`}
                                     ></textarea>
                                     <div className="flex mt-4">
                                         <a
@@ -255,16 +319,18 @@ export default function Index() {
                                                 setIsInEditMode(false);
                                             }}
                                             className={`${
-                                                editedTitle
-                                                    ? "cursor-pointer text-blue-600"
-                                                    : "cursor-not-allowed text-gray-400"
+                                                newTitle
+                                                    ? `cursor-pointer ${isDarkTheme ? "text-blue-500" : "text-blue-600"}`
+                                                    : `cursor-not-allowed ${isDarkTheme ? "text-gray-500" : "text-gray-400"}`
                                             } py-1 block mr-8`}
                                         >
                                             save
                                         </a>
                                         <a
                                             onClick={() => setIsInEditMode(false)}
-                                            className="cursor-pointer py-1 block text-red-600"
+                                            className={`cursor-pointer py-1 block ${
+                                                isDarkTheme ? "text-red-500" : "text-red-600"
+                                            }`}
                                         >
                                             cancel
                                         </a>
@@ -274,10 +340,10 @@ export default function Index() {
                                 <div className="flex flex-col h-full">
                                     <div className="flex-1">
                                         <div className="flex justify-between my-2">
-                                            <div className="text-gray-400 text-sm">
+                                            <div className={`${isDarkTheme ? "text-gray-500" : "text-gray-400"} text-sm`}>
                                                 updated at {note.updatedAt.toLocaleDateString()}
                                             </div>
-                                            <div className="text-gray-400 text-sm">
+                                            <div className={`${isDarkTheme ? "text-gray-500" : "text-gray-400"} text-sm`}>
                                                 created at {note.createdAt.toLocaleDateString()}
                                             </div>
                                         </div>
@@ -292,7 +358,9 @@ export default function Index() {
 
                                                 setIsInEditMode(true);
                                             }}
-                                            className="cursor-pointer text-blue-600 py-1 block mr-8"
+                                            className={`cursor-pointer ${
+                                                isDarkTheme ? "text-blue-500" : "text-blue-600"
+                                            } py-1 block mr-8`}
                                         >
                                             edit
                                         </a>
@@ -305,7 +373,9 @@ export default function Index() {
 
                                                 setNote(undefined);
                                             }}
-                                            className="cursor-pointer py-1 block text-red-600"
+                                            className={`cursor-pointer py-1 block ${
+                                                isDarkTheme ? "text-red-500" : "text-red-600"
+                                            }`}
                                         >
                                             delete
                                         </a>
@@ -313,7 +383,9 @@ export default function Index() {
                                 </div>
                             ) : (
                                 <div className="w-full h-full grid place-items-center">
-                                    <h1 className="text-2xl text-gray-300 select-none">No note selected.</h1>
+                                    <h1 className={`text-2xl ${isDarkTheme ? "text-gray-800" : "text-gray-300"} select-none`}>
+                                        No note selected.
+                                    </h1>
                                 </div>
                             )}
                         </div>
