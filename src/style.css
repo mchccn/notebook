@@ -45,8 +45,59 @@ html {
     font-size: 0.75rem;
 }
 
+.rendered-note h1,
+.rendered-note h2,
+.rendered-note h3,
+.rendered-note h4,
+.rendered-note h5,
+.rendered-note h6 {
+    margin: 0.25rem 0;
+}
+
 .rendered-note pre code {
     display: block;
     overflow-x: auto;
     padding: 0.5em;
+    margin: 0.5rem 0;
+}
+
+.rendered-note p {
+    margin: 0.5rem 0;
+}
+
+.rendered-note code:not(.rendered-note pre code) {
+    @apply bg-gray-100;
+    padding: 0.25rem;
+    font-size: 0.9rem;
+    border-radius: 2px;
+}
+
+.rendered-note ul {
+    display: block;
+    list-style-type: disc;
+    margin: 0.5rem 0;
+    padding-left: 1rem;
+}
+
+.rendered-note ol {
+    display: block;
+    list-style-type: decimal;
+    margin: 0.5rem 0;
+    padding-left: 1rem;
+}
+
+.rendered-note li {
+    display: list-item;
+}
+
+.rendered-note hr {
+    margin: 0.25rem 0;
+}
+
+.dark-theme .rendered-note code:not(.rendered-note pre code) {
+    @apply bg-gray-800;
+}
+
+.dark-theme .rendered-note hr {
+    @apply border-gray-700;
 }

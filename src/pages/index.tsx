@@ -104,7 +104,11 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
                 <link rel="stylesheet" href={`${assetPrefix}/themes/${isDarkTheme ? "dark" : "light"}.css`} />
                 <link rel="shortcut icon" href={`${assetPrefix}/fav.png`} type="image/x-icon" />
             </Head>
-            <div className={`${isDarkTheme ? "bg-gray-900 text-gray-100" : "bg-white"} hidden lg:flex flex-col h-screen`}>
+            <div
+                className={`${
+                    isDarkTheme ? "dark-theme bg-gray-900 text-gray-100" : "bg-white"
+                } hidden lg:flex flex-col h-screen`}
+            >
                 <header
                     className={`${
                         isDarkTheme ? "border border-gray-800 shadow-lg" : "shadow-md"
@@ -324,7 +328,7 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
                                                 setIsInEditMode(false);
                                             }}
                                             className={`${
-                                                newTitle
+                                                editedTitle
                                                     ? `cursor-pointer ${isDarkTheme ? "text-blue-500" : "text-blue-600"}`
                                                     : `cursor-not-allowed ${isDarkTheme ? "text-gray-500" : "text-gray-400"}`
                                             } py-1 block mr-8`}
