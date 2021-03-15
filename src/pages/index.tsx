@@ -48,18 +48,22 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
 
     const [isDarkTheme, setIsDarkTheme] = useState(false);
 
-    useEffect(() => {
-        (async () => {
-            //@ts-ignore
-            setNotes(await db.notes.toArray());
-        })();
+    const [processor, setProcessor] = useState<ReturnType<typeof remark> | undefined>(undefined);
 
+    useEffect(() => {
         setIsDarkTheme(
             localStorage.getItem("cursorsdottsx-notebook-theme") === "dark" ??
                 window.matchMedia("(prefers-color-scheme: dark)").matches
         );
 
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => setIsDarkTheme(event.matches));
+
+        (async () => {
+            //@ts-ignore
+            setNotes(await db.notes.toArray());
+        })();
+
+        setProcessor(remark().use(html));
     }, []);
 
     useEffect(() => {
@@ -68,11 +72,11 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
         document.querySelectorAll(".rendered-note pre code").forEach((block) => {
             hljs.highlightBlock(block as HTMLElement);
         });
-    }, [content, isInEditMode, isInNewMode]);
+    }, [note, content, isInEditMode, isInNewMode]);
 
     useEffect(() => {
         (async () => {
-            if (note) setContent((await remark().use(html).process(note.note)).toString());
+            if (note && processor) setContent((await processor.process(note.note)).toString());
         })();
     }, [note]);
 
@@ -112,7 +116,7 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
                 <header
                     className={`${
                         isDarkTheme ? "border border-gray-800 shadow-lg" : "shadow-md"
-                    } z-10 p-4 h-16 flex items-center justify-between`}
+                    } z-10 p-4 h-16 flex items-center`}
                 >
                     <h2 className="text-2xl font-light select-none cursor-pointer" onClick={() => setIsDarkTheme(!isDarkTheme)}>
                         notebook
