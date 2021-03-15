@@ -64,6 +64,10 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
 
     useEffect(() => {
         hljs.highlightAll();
+
+        document.querySelectorAll(".rendered-note pre code").forEach((block) => {
+            hljs.highlightBlock(block as HTMLElement);
+        });
     }, [content]);
 
     useEffect(() => {
