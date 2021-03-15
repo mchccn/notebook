@@ -1,11 +1,12 @@
 import Dexie from "dexie";
 import hljs from "highlight.js";
+import { GetStaticProps } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import remark from "remark";
 import html from "remark-html";
 
-export default function Index() {
+export default function Index({ assetPrefix }: { assetPrefix: string }) {
     const db = new Dexie("notebook");
 
     db.version(1).stores({
@@ -96,8 +97,8 @@ export default function Index() {
                     content="https://og-image.now.sh/notebook.png?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg&widths=auto&heights=250"
                 />
                 <title>notebook</title>
-                <link rel="stylesheet" href={`/themes/${isDarkTheme ? "dark" : "light"}.css`} />
-                <link rel="shortcut icon" href="/fav.png" type="image/x-icon" />
+                <link rel="stylesheet" href={`${assetPrefix}/themes/${isDarkTheme ? "dark" : "light"}.css`} />
+                <link rel="shortcut icon" href={`${assetPrefix}/fav.png`} type="image/x-icon" />
             </Head>
             <div className={`${isDarkTheme ? "bg-gray-900 text-gray-100" : "bg-white"} hidden lg:flex flex-col h-screen`}>
                 <header
@@ -401,3 +402,12 @@ export default function Index() {
         </>
     );
 }
+
+//@ts-ignore
+export const getStaticProps: GetStaticProps = () => {
+    return {
+        props: {
+            assetPrefix: process.env.NODE_ENV === "production" ? "/notebook" : "",
+        },
+    };
+};

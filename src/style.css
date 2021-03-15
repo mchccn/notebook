@@ -44,3 +44,9 @@ html {
 .rendered-note h6 {
     font-size: 0.75rem;
 }
+
+.rendered-note pre code {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+}
