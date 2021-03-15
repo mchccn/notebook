@@ -392,10 +392,10 @@ export default function Index() {
                     </div>
                 </div>
             </div>
-            <div className="grid lg:hidden place-items-center h-screen">
+            <div className={`${isDarkTheme ? "bg-gray-900 " : ""}grid lg:hidden place-items-center h-screen`}>
                 <div className="text-center">
-                    <h1 className="text-5xl">Your screen is too small.</h1>
-                    <p className="text-lg">Get a bigger screen.</p>
+                    <h1 className={`${isDarkTheme ? "text-gray-100 " : ""}text-5xl`}>Your screen is too small.</h1>
+                    <p className={`${isDarkTheme ? "text-gray-100 " : ""}text-lg`}>Get a bigger screen.</p>
                 </div>
             </div>
         </>
