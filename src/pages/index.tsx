@@ -68,7 +68,7 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
         document.querySelectorAll(".rendered-note pre code").forEach((block) => {
             hljs.highlightBlock(block as HTMLElement);
         });
-    }, [content]);
+    }, [content, isInEditMode, isInNewMode]);
 
     useEffect(() => {
         (async () => {
@@ -227,9 +227,33 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
                                     <textarea
                                         value={newNote}
                                         onChange={(e) => setNewNote(e.target.value)}
+                                        onKeyDown={(event) => {
+                                            if (event.key === "Tab") {
+                                                event.preventDefault();
+
+                                                const newCaretPosition =
+                                                    (event.target as HTMLTextAreaElement).selectionStart + "\t".length;
+
+                                                (event.target as HTMLTextAreaElement).value =
+                                                    (event.target as HTMLTextAreaElement).value.substring(
+                                                        0,
+                                                        (event.target as HTMLTextAreaElement).selectionStart
+                                                    ) +
+                                                    "\t" +
+                                                    (event.target as HTMLTextAreaElement).value.substring(
+                                                        (event.target as HTMLTextAreaElement).selectionStart,
+                                                        (event.target as HTMLTextAreaElement).value.length
+                                                    );
+
+                                                (event.target as HTMLTextAreaElement).selectionStart = newCaretPosition;
+                                                (event.target as HTMLTextAreaElement).selectionEnd = newCaretPosition;
+
+                                                (event.target as HTMLTextAreaElement).focus();
+                                            }
+                                        }}
                                         className={`outline-none text-base ${
                                             isDarkTheme ? "bg-gray-800" : "bg-gray-50"
-                                        } w-full p-2 rounded resize-none block flex-1`}
+                                        } w-full p-2 rounded resize-none block flex-1 whitespace-pre-wrap`}
                                     ></textarea>
                                     <div className="flex mt-4">
                                         <a
@@ -295,6 +319,30 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
                                     <textarea
                                         value={editedNote}
                                         onChange={(e) => setEditedNote(e.target.value)}
+                                        onKeyDown={(event) => {
+                                            if (event.key === "Tab") {
+                                                event.preventDefault();
+
+                                                const newCaretPosition =
+                                                    (event.target as HTMLTextAreaElement).selectionStart + "\t".length;
+
+                                                (event.target as HTMLTextAreaElement).value =
+                                                    (event.target as HTMLTextAreaElement).value.substring(
+                                                        0,
+                                                        (event.target as HTMLTextAreaElement).selectionStart
+                                                    ) +
+                                                    "\t" +
+                                                    (event.target as HTMLTextAreaElement).value.substring(
+                                                        (event.target as HTMLTextAreaElement).selectionStart,
+                                                        (event.target as HTMLTextAreaElement).value.length
+                                                    );
+
+                                                (event.target as HTMLTextAreaElement).selectionStart = newCaretPosition;
+                                                (event.target as HTMLTextAreaElement).selectionEnd = newCaretPosition;
+
+                                                (event.target as HTMLTextAreaElement).focus();
+                                            }
+                                        }}
                                         className={`outline-none text-base ${
                                             isDarkTheme ? "bg-gray-800" : "bg-gray-50"
                                         } w-full p-2 rounded resize-none block flex-1`}
