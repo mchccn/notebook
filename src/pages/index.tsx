@@ -128,8 +128,10 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
                             {notes.map(({ id, title, note, createdAt, updatedAt }, i) => (
                                 <div
                                     className={`note cursor-pointer border ${
-                                        isDarkTheme ? "border-gray-800" : "border-gray-200"
-                                    } w-full h-28 shadow-sm hover:shadow-md transition-shadow flex flex-col px-4 py-3 select-none mt-4 rounded-sm`}
+                                        isDarkTheme
+                                            ? "border-gray-800 shadow-md hover:shadow-lg"
+                                            : "border-gray-200 shadow-sm hover:shadow-md"
+                                    } w-full h-28 transition-shadow flex flex-col px-4 py-3 select-none mt-4 rounded-sm`}
                                     key={i}
                                     onClick={() =>
                                         setNote({
@@ -169,8 +171,8 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
                             {isInNewMode ? (
                                 <div
                                     className={`note-preview border ${
-                                        isDarkTheme ? "border-gray-800" : "border-gray-200"
-                                    } w-full h-28 shadow-sm flex flex-col px-4 py-3 select-none mt-4 rounded-sm`}
+                                        isDarkTheme ? "border-gray-800 shadow-md" : "border-gray-200 shadow-sm"
+                                    } w-full h-28 flex flex-col px-4 py-3 select-none mt-4 rounded-sm`}
                                 >
                                     <h1 className="flex-1 text-xl flex items-center">
                                         <span className="max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
@@ -199,8 +201,10 @@ export default function Index({ assetPrefix }: { assetPrefix: string }) {
                             ) : (
                                 <div
                                     className={`note cursor-pointer border ${
-                                        isDarkTheme ? "border-green-500" : "border-green-400"
-                                    } w-full h-28 shadow-sm hover:shadow-md transition-shadow grid place-items-center mt-4 rounded-sm`}
+                                        isDarkTheme
+                                            ? "border-green-500 shadow-md hover:shadow-lg"
+                                            : "border-green-400 shadow-sm hover:shadow-md"
+                                    } w-full h-28 transition-shadow grid place-items-center mt-4 rounded-sm`}
                                     onClick={() => setIsInNewMode(true)}
                                 >
                                     <span
